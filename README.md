@@ -1,9 +1,8 @@
 # SlopeItBreadcrumbBundle
 
-[![Latest Stable Version](https://poser.pugx.org/slope-it/breadcrumb-bundle/v/stable)](https://packagist.org/packages/slope_it/breadcrumb-bundle)
-[![Total Downloads](https://poser.pugx.org/slope-it/breadcrumb-bundle/downloads)](https://packagist.org/packages/slope_it/breadcrumb-bundle)
-[![License](https://poser.pugx.org/slope-it/breadcrumb-bundle/license)](https://packagist.org/packages/slope_it/breadcrumb-bundle)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/7f13817a-3765-42f5-becb-0990a1219e39/mini.png)](https://insight.sensiolabs.com/projects/7f13817a-3765-42f5-becb-0990a1219e39)
+[![Latest Stable Version](https://poser.pugx.org/slope-it/breadcrumb-bundle/v/stable)](https://packagist.org/packages/slope-it/breadcrumb-bundle)
+[![Total Downloads](https://poser.pugx.org/slope-it/breadcrumb-bundle/downloads)](https://packagist.org/packages/slope-it/breadcrumb-bundle)
+[![License](https://poser.pugx.org/slope-it/breadcrumb-bundle/license)](https://packagist.org/packages/slope-it/breadcrumb-bundle)
 
 This bundle provides a way to create "dynamic" breadcrumbs in your Symfony applications.
 
@@ -24,8 +23,6 @@ Or, if you prefer, you can require any version in your `composer.json`:
     }
 }
 ```
-
-*NOTE:* Until the bundle reaches version 1.0.0 I can't guarantee to follow [semantic versioning](http://semver.org) strictly.
 
 ## Usage
 
