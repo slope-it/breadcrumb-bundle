@@ -1,9 +1,8 @@
-# AndreaSpregaBreadcrumbBundle
+# SlopeItBreadcrumbBundle
 
-[![Latest Stable Version](https://poser.pugx.org/asprega/breadcrumb-bundle/v/stable)](https://packagist.org/packages/asprega/breadcrumb-bundle)
-[![Build Status](https://travis-ci.org/asprega/BreadcrumbBundle.svg)](https://travis-ci.org/asprega/BreadcrumbBundle)
-[![Total Downloads](https://poser.pugx.org/asprega/breadcrumb-bundle/downloads)](https://packagist.org/packages/asprega/breadcrumb-bundle)
-[![License](https://poser.pugx.org/asprega/breadcrumb-bundle/license)](https://packagist.org/packages/asprega/breadcrumb-bundle)
+[![Latest Stable Version](https://poser.pugx.org/slope-it/breadcrumb-bundle/v/stable)](https://packagist.org/packages/slope_it/breadcrumb-bundle)
+[![Total Downloads](https://poser.pugx.org/slope-it/breadcrumb-bundle/downloads)](https://packagist.org/packages/slope_it/breadcrumb-bundle)
+[![License](https://poser.pugx.org/slope-it/breadcrumb-bundle/license)](https://packagist.org/packages/slope_it/breadcrumb-bundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/7f13817a-3765-42f5-becb-0990a1219e39/mini.png)](https://insight.sensiolabs.com/projects/7f13817a-3765-42f5-becb-0990a1219e39)
 
 This bundle provides a way to create "dynamic" breadcrumbs in your Symfony applications.
@@ -13,7 +12,7 @@ This bundle provides a way to create "dynamic" breadcrumbs in your Symfony appli
 Composer is the only supported installation method. Run the following to install the latest version from Packagist:
 
 ``` bash
-composer require asprega/breadcrumb-bundle
+composer require slope-it/breadcrumb-bundle
 ```
 
 Or, if you prefer, you can require any version in your `composer.json`:
@@ -21,7 +20,7 @@ Or, if you prefer, you can require any version in your `composer.json`:
 ``` json
 {
     "require": {
-        "asprega/breadcrumb-bundle": "*"
+        "slope-it/breadcrumb-bundle": "*"
     }
 }
 ```
@@ -42,7 +41,7 @@ class AppKernel extends Kernel
     {
         $bundles = array(
             // ...
-            new AndreaSprega\Bundle\BreadcrumbBundle\AndreaSpregaBreadcrumbBundle(),
+            new SlopeIt\BreadcrumbBundle\SlopeItBreadcrumbBundle(),
         );
         // ...
     }
@@ -61,7 +60,7 @@ public function coolStuffAction()
 {
     // ...
 
-    $builder = $this->get('asprega.breadcrumb.builder');
+    $builder = $this->get('slope_it.breadcrumb.builder');
     $builder->addItem('home', 'home_route');
     $builder->addItem('$entity.property', 'entity_route');
     $builder->addItem('cool_stuff');
@@ -77,7 +76,7 @@ public function coolStuffAction()
 ``` php
 <?php
 
-use AndreaSprega\Bundle\BreadcrumbBundle\Annotation\Breadcrumb;
+use SlopeIt\BreadcrumbBundle\Annotation\Breadcrumb;
 
 /**
  * @Breadcrumb({"label" = "home", "route" = "home_route", "params" = {"p" = "val"}, "translationDomain" = "domain" })
@@ -101,7 +100,7 @@ class CoolController extends Controller
 The last step is to use the following Twig function wherever you want the breadcrumb printed in your template:
 
 ``` php
-asprega_breadcrumb()
+slope_it_breadcrumb()
 ```
 
 Regardless of the way you used to create the breadcrumb, the result will be something like:
@@ -161,7 +160,7 @@ Note how you don't have to provide the route parameters (since the current reque
 The bundle default template for rendering breadcrumb can be overridden by adding the following lines to the `config.yml` of your application:
 
 ``` yml
-asprega_breadcrumb:
+slope_it_breadcrumb:
     template: YourBundle::breadcrumb.html.twig
 ```
 
@@ -171,11 +170,11 @@ However, in your template you'll just have to iterate over the `items` variable 
 ## How to contribute
 
 * Did you find and fix any bugs in the existing code?
-* Do you want to contribute a new cool feature?
-* Do you think documentation isn't good enough and you think you can improve it?
+* Do you want to contribute a new feature?
+* Do you think documentation can be improved?
 
-Under any of these circumstances, please fork this repo and create a pull request. I am more than happy to accept contributions!
+Under any of these circumstances, please fork this repo and create a pull request. We are more than happy to accept contributions!
 
 ## Maintainer
 
-[@andreasprega](https://twitter.com/andreasprega)
+[@asprega](https://twitter.com/asprega)
