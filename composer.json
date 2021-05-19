@@ -1,5 +1,5 @@
 {
-    "name": "asprega/breadcrumb-bundle",
+    "name": "slope-it/breadcrumb-bundle",
     "description": "A bundle for generating dynamic breadcrumbs in Symfony applications",
     "type": "symfony-bundle",
     "license": "MIT",
@@ -7,13 +7,15 @@
         "Breadcrumb",
         "Breadcrumbs",
         "Symfony",
-        "Bundle"
+        "Bundle",
+        "slope",
+        "slope.it"
     ],
     "authors": [
         {
             "name": "Andrea Sprega",
-            "email": "andreasprega@gmail.com",
-            "role": "Developer"
+            "email": "andrea.sprega@slope.it",
+            "role": "Software engineer"
         }
     ],
     "require": {
@@ -25,17 +27,23 @@
         "twig/twig": "^2.10|^3.0"
     },
     "require-dev": {
-        "mockery/mockery": "1.3.1",
-        "phpunit/phpunit": "8.5.13"
+        "mockery/mockery": "1.4.3",
+        "phpunit/phpunit": "9.5.4"
     },
     "autoload": {
         "psr-4": {
-            "AndreaSprega\\Bundle\\BreadcrumbBundle\\": ""
+            "SlopeIt\\BreadcrumbBundle\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SlopeIt\\Tests\\BreadcrumbBundle\\": "tests"
         }
     },
     "archive": {
         "exclude": [
-            "/Tests"
+            ".github",
+            "/tests"
         ]
     },
     "config": {
