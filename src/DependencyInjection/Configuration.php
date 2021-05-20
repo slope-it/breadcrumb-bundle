@@ -15,7 +15,7 @@ class Configuration implements ConfigurationInterface
         $builder = new TreeBuilder('slope_it_breadcrumb');
         $builder->getRootNode()
             ->children()
-                ->scalarNode('template')->defaultValue('@AndreaSpregaBreadcrumb/breadcrumb.html.twig')->end()
+                ->scalarNode('template')->defaultValue('@SlopeItBreadcrumb/breadcrumb.html.twig')->end()
             ->end();
         return $builder;
     }
