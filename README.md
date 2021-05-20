@@ -174,4 +174,4 @@ Under any of these circumstances, please fork this repo and create a pull reques
 
 ## Maintainer
 
-[@asprega](https://twitter.com/asprega)
+[@andreasprega](https://twitter.com/andreasprega)
