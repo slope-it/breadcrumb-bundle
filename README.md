@@ -10,13 +10,13 @@ This bundle provides a way to create "dynamic" breadcrumbs in your Symfony appli
 
 Composer is the only supported installation method. Run the following to install the latest version from Packagist:
 
-``` bash
+```bash
 composer require slope-it/breadcrumb-bundle
 ```
 
 Or, if you prefer, you can require any version in your `composer.json`:
 
-``` json
+```json
 {
     "require": {
         "slope-it/breadcrumb-bundle": "*"
@@ -30,7 +30,7 @@ Or, if you prefer, you can require any version in your `composer.json`:
 
 Once installed, load the bundle in your Kernel class:
 
-``` php
+```php
 // ...
 class AppKernel extends Kernel
 {
@@ -48,29 +48,61 @@ class AppKernel extends Kernel
 
 ### 2. Define breadcrumbs
 
-There are two ways to create a breadcrumb: via code (1) or via annotations (2).
+There are three ways to create a breadcrumb: via code (1), via attributes (2) (PHP 8.0+) or via annotations (3).
 
-*Via code*: you can retrieve the breadcrumb builder in your controller and add breadcrumb items:
+*Via code*: you can inject the breadcrumb builder in your controller and add breadcrumb items:
 
-``` php
-public function coolStuffAction()
+```php
+<?php
+
+use SlopeIt\BreadcrumbBundle\Service\BreadcrumbBuilder;
+
+class CoolController extends Controller
 {
-    // ...
+    public function coolStuffAction(BreadcrumbBuilder $builder)
+    {
+        $builder->addItem('home', 'home_route');
+        $builder->addItem('$entity.property', 'entity_route');
+        $builder->addItem('cool_stuff');
+    
+        // ...
+    }
+}
+```
 
-    $builder = $this->get('slope_it.breadcrumb.builder');
-    $builder->addItem('home', 'home_route');
-    $builder->addItem('$entity.property', 'entity_route');
-    $builder->addItem('cool_stuff');
+*Via attributes*: just use the `#[Breadcrumb]` attribute at the class and/or method level. They will be merged (class comes first).
 
-    // ...
+*NOTE:* The attribute can take either a single item (in the example it's done at the class level) or multiple items (in the example, at the method level).
+
+```php
+<?php
+
+use SlopeIt\BreadcrumbBundle\Annotation\Breadcrumb;
+
+#[Breadcrumb([
+  'label' => 'home',
+  'route' => 'home_route',
+  'params' => ['p' => 'val'],
+  'translationDomain' => 'domain',
+])]
+class CoolController extends Controller
+{
+    #[Breadcrumb([
+        ['label' => '$entity.property', 'route' => 'entity_route'], 
+        ['label' => 'cool_stuff'], 
+    ])]
+    public function coolStuffAction()
+    {
+        // ...
+    }
 }
 ```
 
 *Via annotations*: just use the `@Breadcrumb` annotation at the class and/or method level. They will be merged (class comes first).
 
-*NOTE:* The annotation can take either a single item (in the above example it's done at the class level) or multiple items (at the method level).
+*NOTE:* The annotation can take either a single item (in the example it's done at the class level) or multiple items (in the example, at the method level).
 
-``` php
+```php
 <?php
 
 use SlopeIt\BreadcrumbBundle\Annotation\Breadcrumb;
@@ -96,8 +128,8 @@ class CoolController extends Controller
 
 The last step is to use the following Twig function wherever you want the breadcrumb printed in your template:
 
-``` php
-slope_it_breadcrumb()
+```
+{{ slope_it_breadcrumb() }}
 ```
 
 Regardless of the way you used to create the breadcrumb, the result will be something like:
@@ -134,7 +166,7 @@ child_edit    | { parent_id: 12345, child_id: 67890 } | /parents/12345/children/
 
 If you are in the action for route `children_edit` and you want to generate a breadcrumb including all the above steps, you will be able to use the following annotation:
 
-``` php
+```php
 /**
  * @Breadcrumb({
  *   { "label" = "parents", "route" = "parent_list" },
@@ -156,7 +188,7 @@ Note how you don't have to provide the route parameters (since the current reque
 
 The bundle default template for rendering breadcrumb can be overridden by adding the following lines to the `config.yml` of your application:
 
-``` yml
+```yml
 slope_it_breadcrumb:
     template: YourBundle::breadcrumb.html.twig
 ```

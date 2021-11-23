@@ -6,6 +6,7 @@ namespace SlopeIt\BreadcrumbBundle\Annotation;
  * @Annotation
  * @Target({"CLASS","METHOD"})
  */
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 class Breadcrumb
 {
     /**
@@ -30,18 +31,16 @@ class Breadcrumb
      */
     public function __construct(array $items)
     {
-        // Perform some validation to help resolution of developer mistakes.
-        if (!array_key_exists('value', $items)) {
-            throw new \RuntimeException('The @Breadcrumb annotation should not have any root level key.');
+        // 'value' is present in case this class is used as annotation.
+        if (array_key_exists('value', $items)) {
+            $items = $items['value'];
         }
 
         // $items can be either a single item or an array of items, for convenience. Normalize it to an array of items.
-        if (array_key_exists('label', $items['value'])) {
-            $normalizedItems = [ $items['value'] ];
-        } else {
-            $normalizedItems = $items['value'];
+        if (array_key_exists('label', $items)) {
+            $items = [$items];
         }
 
-        $this->items = $normalizedItems;
+        $this->items = $items;
     }
 }
