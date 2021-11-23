@@ -37,21 +37,27 @@ class BreadcrumbListener
         $class = new \ReflectionClass($controller);
         $method = new \ReflectionMethod($controller, $action);
 
-        $annotations = [];
+        $breadcrumbs = [];
         if (($classAnnotation = $this->annotationReader->getClassAnnotation($class, Breadcrumb::class))) {
-            $annotations[] = $classAnnotation;
+            $breadcrumbs[] = $classAnnotation;
         }
-        if ($methodAnnotation = $this->annotationReader->getMethodAnnotation($method, Breadcrumb::class)) {
-            $annotations[] = $methodAnnotation;
+        if (\PHP_VERSION_ID >= 80000 && ($classAttribute = $class->getAttributes(Breadcrumb::class)[0] ?? null)) {
+            $breadcrumbs[] = $classAttribute->newInstance();
+        }
+        if (($methodAnnotation = $this->annotationReader->getMethodAnnotation($method, Breadcrumb::class))) {
+            $breadcrumbs[] = $methodAnnotation;
+        }
+        if (\PHP_VERSION_ID >= 80000 && ($methodAttribute = $method->getAttributes(Breadcrumb::class)[0] ?? null)) {
+            $breadcrumbs[] = $methodAttribute->newInstance();
         }
 
-        foreach ($annotations as $annotation) {
-            foreach ($annotation->items as $item) {
+        foreach ($breadcrumbs as $breadcrumb) {
+            foreach ($breadcrumb->items as $item) {
                 $this->breadcrumbBuilder->addItem(
                     $item['label'],
-                    isset($item['route']) ? $item['route'] : null,
-                    isset($item['params']) ? $item['params'] : null,
-                    isset($item['translationDomain']) ? $item['translationDomain'] : null
+                    $item['route'] ?? null,
+                    $item['params'] ?? null,
+                    $item['translationDomain'] ?? null
                 );
             }
         }
