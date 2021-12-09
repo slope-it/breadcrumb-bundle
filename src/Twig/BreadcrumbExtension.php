@@ -25,12 +25,7 @@ class BreadcrumbExtension extends AbstractExtension
      */
     private $template;
 
-    /**
-     * @param BreadcrumbBuilder       $builder
-     * @param BreadcrumbItemProcessor $itemProcessor
-     * @param string                  $template
-     */
-    public function __construct(BreadcrumbBuilder $builder, BreadcrumbItemProcessor $itemProcessor, $template)
+    public function __construct(BreadcrumbBuilder $builder, BreadcrumbItemProcessor $itemProcessor, string $template)
     {
         $this->builder = $builder;
         $this->itemProcessor = $itemProcessor;
@@ -39,8 +34,9 @@ class BreadcrumbExtension extends AbstractExtension
 
     /**
      * {@inheritDoc}
+     * @return TwigFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction(
@@ -55,20 +51,12 @@ class BreadcrumbExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'slope_it_breadcrumb';
     }
 
-    /**
-     * Returns the rendered breadcrumb.
-     *
-     * @return string
-     */
-    public function renderBreadcrumb(Environment $twig, array $context)
+    public function renderBreadcrumb(Environment $twig, array $context): string
     {
         $breadcrumb = [];
         foreach ($this->builder->getItems() as $item) {

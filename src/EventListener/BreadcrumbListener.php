@@ -25,7 +25,7 @@ class BreadcrumbListener
         $this->annotationReader = $annotationReader;
     }
 
-    public function onKernelController(ControllerEvent $event)
+    public function onKernelController(ControllerEvent $event): void
     {
         // In case controller is not an array (e.g. a closure or an invokable class), we can't do anything.
         if (!is_array($event->getController())) {

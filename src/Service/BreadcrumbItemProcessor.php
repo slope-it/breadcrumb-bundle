@@ -47,6 +47,9 @@ class BreadcrumbItemProcessor
         $this->requestStack = $requestStack;
     }
 
+    /**
+     * @param array<string, mixed> $variables
+     */
     public function process(BreadcrumbItem $item, array $variables): ProcessedBreadcrumbItem
     {
         // Process the label
@@ -85,6 +88,8 @@ class BreadcrumbItemProcessor
 
     /**
      * Returns the value contained in the variable name (with optional property path) of the given expression.
+     *
+     * @return mixed
      */
     private function parseValue(string $expression, array $variables)
     {
