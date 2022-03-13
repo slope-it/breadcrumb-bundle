@@ -95,6 +95,23 @@ class BreadcrumbItemProcessorTest extends TestCase
     /**
      * @covers ::process
      */
+    public function test_process_item_with_label_as_multiple_variables_with_property_path()
+    {
+        $item = new BreadcrumbItem('$variableName.property.nestedProperty - "$variableName.property.nestedProperty"');
+
+        $object = (object) ['property' => (object) ['nestedProperty' => 'propertyValue']];
+
+        $this->propertyAccessor->expects('getValue')->with($object, 'property.nestedProperty')
+            ->andReturn('propertyValue');
+
+        $processedItem = $this->SUT->process($item, ['variableName' => $object]);
+
+        $this->assertSame('propertyValue - "propertyValue"', $processedItem->getTranslatedLabel());
+    }
+
+    /**
+     * @covers ::process
+     */
     public function test_process_item_with_label_not_to_be_translated()
     {
         $item = new BreadcrumbItem('Already translated label', null, null, false);
