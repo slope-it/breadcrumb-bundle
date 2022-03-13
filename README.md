@@ -145,7 +145,8 @@ In which the first two items are anchors and the last one is text only.
 Under the hood, this is the business logic involved, for each item, in the breadcrumb generation:
 * `label` will be the printed text. It can be either:
   * A "static" string (the translator will attempt to translate it by using it as a translation key)
-  * A special string, prepended with `$`. In this case, the breadcrumb label will be extracted from the variable passed to the template. Property paths can be used, e.g.: `$variable.property.path`
+  * A special string, prepended with `$`. In this case, the breadcrumb label will be extracted from the variable passed to the template. Property paths can be used, e.g.: `$variable.property.path`.
+  * You can even build a complex label by mixing static string and multiple variables: `Gallery "$gallery.title" - $gallery.year`.
 * `route` will be used to generate the url for the item anchor (if provided). If not provided, the item will not be clickable.
 * `params` will be used to generate the url related to the provided route. It's an associative array where each value can be either:
   * A "static" string
