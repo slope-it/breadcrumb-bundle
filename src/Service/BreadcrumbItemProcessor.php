@@ -70,7 +70,7 @@ class BreadcrumbItemProcessor
             }
         }
         foreach ($item->getRouteParams() ?: [] as $key => $value) {
-            if ($value[0] === '$') {
+            if (is_string($value) && $value[0] === '$') {
                 $params[$key] = $this->parseValue($value, $variables);
             } else {
                 $params[$key] = $value;
