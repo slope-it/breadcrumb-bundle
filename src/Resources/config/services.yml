@@ -22,6 +22,7 @@ services:
             - '@translator'
             - '@router'
             - '@request_stack'
+            - '%slope_it_breadcrumb.extract_parameters%'
 
     slope_it.breadcrumb.twig_extension:
         class: SlopeIt\BreadcrumbBundle\Twig\BreadcrumbExtension

@@ -59,7 +59,8 @@ class BreadcrumbItemProcessorTest extends TestCase
             $this->propertyAccessor,
             $this->translator,
             $this->router,
-            $this->requestStack
+            $this->requestStack,
+            true
         );
     }
 

@@ -27,6 +27,7 @@ class SlopeItBreadcrumbExtension extends Extension
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
+        $container->setParameter('slope_it_breadcrumb.extract_parameters', $config['extract_current_route_parameters']);
         $container->setParameter('slope_it_breadcrumb.template', $config['template']);
     }
 }

@@ -35,16 +35,23 @@ class BreadcrumbItemProcessor
      */
     private $translator;
 
+    /**
+     * @var bool
+     */
+    private $extractParameters;
+
     public function __construct(
         PropertyAccessorInterface $propertyAccessor,
         TranslatorInterface $translator,
         RouterInterface $router,
-        RequestStack $requestStack
+        RequestStack $requestStack,
+        bool $extractParameters
     ) {
         $this->propertyAccessor = $propertyAccessor;
         $this->translator = $translator;
         $this->router = $router;
         $this->requestStack = $requestStack;
+        $this->extractParameters = $extractParameters;
     }
 
     /**
@@ -64,9 +71,11 @@ class BreadcrumbItemProcessor
         // Process the route
         // TODO: cache parameters extracted from current request
         $params = [];
-        foreach ($this->requestStack->getCurrentRequest()->attributes as $key => $value) {
-            if ($key[0] !== '_') {
-                $params[$key] = $value;
+        if ($this->extractParameters) {
+            foreach ($this->requestStack->getCurrentRequest()->attributes as $key => $value) {
+                if ($key[0] !== '_') {
+                    $params[$key] = $value;
+                }
             }
         }
         foreach ($item->getRouteParams() ?: [] as $key => $value) {
