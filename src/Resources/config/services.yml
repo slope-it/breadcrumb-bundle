@@ -12,6 +12,10 @@ services:
         arguments:
             - '@slope_it.breadcrumb.item_factory'
 
+    SlopeIt\BreadcrumbBundle\Service\BreadcrumbBuilder:
+        alias: slope_it.breadcrumb.builder
+        public: true
+
     slope_it.breadcrumb.item_factory:
         class: SlopeIt\BreadcrumbBundle\Service\BreadcrumbItemFactory
 
