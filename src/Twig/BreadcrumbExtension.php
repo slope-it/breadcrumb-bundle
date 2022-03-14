@@ -47,6 +47,10 @@ class BreadcrumbExtension extends AbstractExtension
                     'needs_environment' => true,
                     'needs_context' => true
                 ]
+            ),
+            new TwigFunction(
+                'slope_it_is_breadcrumb_empty',
+                [ $this, 'isBreadcrumbEmpty' ]
             )
         ];
     }
@@ -64,5 +68,10 @@ class BreadcrumbExtension extends AbstractExtension
         }
 
         return $twig->render($this->template, [ 'items' => $breadcrumb ]);
+    }
+
+    public function isBreadcrumbEmpty(): bool
+    {
+        return 0 === \count($this->builder->getItems());
     }
 }
