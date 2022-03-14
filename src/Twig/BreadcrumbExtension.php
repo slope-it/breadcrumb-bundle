@@ -41,7 +41,7 @@ class BreadcrumbExtension extends AbstractExtension
         return [
             new TwigFunction(
                 'slope_it_breadcrumb',
-                [ $this, 'renderBreadcrumb' ],
+                [$this, 'renderBreadcrumb'],
                 [
                     'is_safe' => [ 'html' ],
                     'needs_environment' => true,
@@ -50,7 +50,7 @@ class BreadcrumbExtension extends AbstractExtension
             ),
             new TwigFunction(
                 'slope_it_is_breadcrumb_empty',
-                [ $this, 'isBreadcrumbEmpty' ]
+                [$this, 'isBreadcrumbEmpty']
             )
         ];
     }
@@ -58,6 +58,11 @@ class BreadcrumbExtension extends AbstractExtension
     public function getName(): string
     {
         return 'slope_it_breadcrumb';
+    }
+
+    public function isBreadcrumbEmpty(): bool
+    {
+        return \count($this->builder->getItems()) === 0;
     }
 
     public function renderBreadcrumb(Environment $twig, array $context): string
@@ -68,10 +73,5 @@ class BreadcrumbExtension extends AbstractExtension
         }
 
         return $twig->render($this->template, [ 'items' => $breadcrumb ]);
-    }
-
-    public function isBreadcrumbEmpty(): bool
-    {
-        return 0 === \count($this->builder->getItems());
     }
 }

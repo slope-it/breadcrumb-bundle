@@ -140,6 +140,12 @@ Home > Value of entity property > Cool stuff
 
 In which the first two items are anchors and the last one is text only.
 
+Furthermore, in case you need to know whether the breadcrumb has items or not, you can use:
+
+```
+{{ slope_it_is_breadcrumb_empty() }}
+```
+
 ### How the breadcrumb is generated
 
 Under the hood, this is the business logic involved, for each item, in the breadcrumb generation:
