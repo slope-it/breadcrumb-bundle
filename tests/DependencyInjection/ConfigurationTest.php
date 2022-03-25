@@ -2,9 +2,9 @@
 
 namespace SlopeIt\Tests\BreadcrumbBundle\DependencyInjection;
 
-use SlopeIt\BreadcrumbBundle\DependencyInjection\Configuration;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use SlopeIt\BreadcrumbBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
@@ -19,17 +19,20 @@ class ConfigurationTest extends TestCase
      *
      * @covers ::getConfigTreeBuilder
      */
-    public function test_load_overrideTemplate()
+    public function testLoadOverrideTemplate()
     {
         $config = [
             'slope_it_breadcrumb' => [
-                'template' => 'aTemplate.html.twig'
-            ]
+                'template' => 'aTemplate.html.twig',
+            ],
         ];
 
         $processor = new Processor();
         $processedConfig = $processor->processConfiguration(new Configuration(), $config);
 
-        $this->assertEquals(['template' => 'aTemplate.html.twig'], $processedConfig);
+        $this->assertEquals([
+            'template' => 'aTemplate.html.twig',
+            'extract_current_route_parameters' => true,
+        ], $processedConfig);
     }
 }
