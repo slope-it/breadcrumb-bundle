@@ -1,10 +1,10 @@
 <?php
 
-namespace SlopeIt\Tests\BreadcrumbBundle\Model;
+namespace SlopeIt\Tests\BreadcrumbBundle\Unit\Model;
 
-use SlopeIt\BreadcrumbBundle\Model\BreadcrumbItem;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use SlopeIt\BreadcrumbBundle\Model\BreadcrumbItem;
 
 /**
  * @coversDefaultClass \SlopeIt\BreadcrumbBundle\Model\BreadcrumbItem

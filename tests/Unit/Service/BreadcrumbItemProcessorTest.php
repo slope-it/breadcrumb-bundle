@@ -1,15 +1,16 @@
 <?php
 
-namespace SlopeIt\Tests\BreadcrumbBundle\Service;
+namespace SlopeIt\Tests\BreadcrumbBundle\Unit\Service;
 
-use SlopeIt\BreadcrumbBundle\Model\BreadcrumbItem;
-use SlopeIt\BreadcrumbBundle\Service\BreadcrumbItemProcessor;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use SlopeIt\BreadcrumbBundle\Model\BreadcrumbItem;
+use SlopeIt\BreadcrumbBundle\Service\BreadcrumbItemProcessor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RequestContext;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -35,9 +36,9 @@ class BreadcrumbItemProcessorTest extends TestCase
     private $requestStack;
 
     /**
-     * @var RouterInterface|\Mockery\MockInterface
+     * @var UrlGeneratorInterface|\Mockery\MockInterface
      */
-    private $router;
+    private $urlGenerator;
 
     /**
      * @var TranslatorInterface|\Mockery\MockInterface
@@ -48,7 +49,12 @@ class BreadcrumbItemProcessorTest extends TestCase
     {
         $this->propertyAccessor = \Mockery::mock(PropertyAccessorInterface::class);
         $this->translator = \Mockery::mock(TranslatorInterface::class);
-        $this->router = \Mockery::mock(RouterInterface::class);
+        $this->urlGenerator = \Mockery::mock(
+            UrlGeneratorInterface::class,
+            [
+                'getContext' => \Mockery::spy(RequestContext::class, ['getParameters' => []])
+            ]
+        );
         $this->requestStack = \Mockery::mock(RequestStack::class);
 
         $currentRequest = \Mockery::mock(Request::class);
@@ -58,7 +64,7 @@ class BreadcrumbItemProcessorTest extends TestCase
         $this->SUT = new BreadcrumbItemProcessor(
             $this->propertyAccessor,
             $this->translator,
-            $this->router,
+            $this->urlGenerator,
             $this->requestStack
         );
     }
@@ -70,9 +76,9 @@ class BreadcrumbItemProcessorTest extends TestCase
     {
         $item = new BreadcrumbItem('$variableName');
 
-        $processedItem = $this->SUT->process($item, ['variableName' => 'variableValue']);
+        $processedItems = $this->SUT->process([$item], ['variableName' => 'variableValue']);
 
-        $this->assertSame('variableValue', $processedItem->getTranslatedLabel());
+        $this->assertSame('variableValue', $processedItems[0]->getTranslatedLabel());
     }
 
     /**
@@ -87,9 +93,9 @@ class BreadcrumbItemProcessorTest extends TestCase
         $this->propertyAccessor->expects('getValue')->with($object, 'property.nestedProperty')
             ->andReturn('propertyValue');
 
-        $processedItem = $this->SUT->process($item, ['variableName' => $object]);
+        $processedItems = $this->SUT->process([$item], ['variableName' => $object]);
 
-        $this->assertSame('propertyValue', $processedItem->getTranslatedLabel());
+        $this->assertSame('propertyValue', $processedItems[0]->getTranslatedLabel());
     }
 
     /**
@@ -99,9 +105,9 @@ class BreadcrumbItemProcessorTest extends TestCase
     {
         $item = new BreadcrumbItem('Already translated label', null, null, false);
 
-        $processedItem = $this->SUT->process($item, []);
+        $processedItems = $this->SUT->process([$item], []);
 
-        $this->assertSame('Already translated label', $processedItem->getTranslatedLabel());
+        $this->assertSame('Already translated label', $processedItems[0]->getTranslatedLabel());
     }
 
     /**
@@ -114,9 +120,9 @@ class BreadcrumbItemProcessorTest extends TestCase
         $this->translator->expects('trans')->with('translatable_key', [], null)
             ->andReturn('Translated label');
 
-        $processedItem = $this->SUT->process($item, []);
+        $processedItems = $this->SUT->process([$item], []);
 
-        $this->assertSame('Translated label', $processedItem->getTranslatedLabel());
+        $this->assertSame('Translated label', $processedItems[0]->getTranslatedLabel());
     }
 
     /**
@@ -129,9 +135,9 @@ class BreadcrumbItemProcessorTest extends TestCase
         $this->translator->expects('trans')->with('translatable_key', [], 'custom_domain')
             ->andReturn('Translated label');
 
-        $processedItem = $this->SUT->process($item, []);
+        $processedItems = $this->SUT->process([$item], []);
 
-        $this->assertSame('Translated label', $processedItem->getTranslatedLabel());
+        $this->assertSame('Translated label', $processedItems[0]->getTranslatedLabel());
     }
 
     /**
@@ -141,8 +147,8 @@ class BreadcrumbItemProcessorTest extends TestCase
     {
         $item = new BreadcrumbItem();
 
-        $processedItem = $this->SUT->process($item, []);
+        $processedItems = $this->SUT->process([$item], []);
 
-        $this->assertNull($processedItem->getTranslatedLabel());
+        $this->assertNull($processedItems[0]->getTranslatedLabel());
     }
 }

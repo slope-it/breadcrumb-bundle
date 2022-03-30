@@ -67,11 +67,11 @@ class BreadcrumbExtension extends AbstractExtension
 
     public function renderBreadcrumb(Environment $twig, array $context): string
     {
-        $breadcrumb = [];
-        foreach ($this->builder->getItems() as $item) {
-            $breadcrumb[] = $this->itemProcessor->process($item, $context);
-        }
-
-        return $twig->render($this->template, [ 'items' => $breadcrumb ]);
+        return $twig->render(
+            $this->template,
+            [
+                'items' => $this->itemProcessor->process($this->builder->getItems(), $context)
+            ]
+        );
     }
 }

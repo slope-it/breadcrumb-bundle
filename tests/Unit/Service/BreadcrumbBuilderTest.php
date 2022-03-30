@@ -1,12 +1,12 @@
 <?php
 
-namespace SlopeIt\Tests\BreadcrumbBundle\Service;
+namespace SlopeIt\Tests\BreadcrumbBundle\Unit\Service;
 
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 use SlopeIt\BreadcrumbBundle\Model\BreadcrumbItem;
 use SlopeIt\BreadcrumbBundle\Service\BreadcrumbBuilder;
 use SlopeIt\BreadcrumbBundle\Service\BreadcrumbItemFactory;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \SlopeIt\BreadcrumbBundle\Service\BreadcrumbBuilder

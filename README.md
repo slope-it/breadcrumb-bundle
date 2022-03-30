@@ -36,10 +36,10 @@ class AppKernel extends Kernel
 {
     public function registerBundles()
     {
-        $bundles = array(
+        $bundles = [
             // ...
             new SlopeIt\BreadcrumbBundle\SlopeItBreadcrumbBundle(),
-        );
+        ];
         // ...
     }
     // ...
@@ -209,7 +209,3 @@ However, in your template you'll just have to iterate over the `items` variable 
 * Do you think documentation can be improved?
 
 Under any of these circumstances, please fork this repo and create a pull request. We are more than happy to accept contributions!
-
-## Maintainer
-
-[@andreasprega](https://twitter.com/andreasprega)

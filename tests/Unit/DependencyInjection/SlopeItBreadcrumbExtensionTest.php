@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace SlopeIt\Tests\BreadcrumbBundle\DependencyInjection;
+namespace SlopeIt\Tests\BreadcrumbBundle\Unit\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use SlopeIt\BreadcrumbBundle\DependencyInjection\SlopeItBreadcrumbExtension;

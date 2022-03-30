@@ -1,10 +1,10 @@
 <?php
 
-namespace SlopeIt\Tests\BreadcrumbBundle\DependencyInjection;
+namespace SlopeIt\Tests\BreadcrumbBundle\Unit\DependencyInjection;
 
-use SlopeIt\BreadcrumbBundle\DependencyInjection\Configuration;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use SlopeIt\BreadcrumbBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
