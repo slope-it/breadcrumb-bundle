@@ -1,5 +1,6 @@
 /.idea
 /vendor
+/var
 phpunit.xml
 composer.lock
 .phpunit.result.cache

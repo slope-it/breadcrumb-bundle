@@ -1,12 +1,12 @@
 <?php
 
-namespace SlopeIt\Tests\BreadcrumbBundle\EventListener;
+namespace SlopeIt\Tests\BreadcrumbBundle\Unit\EventListener;
 
-use SlopeIt\BreadcrumbBundle\EventListener\BreadcrumbListener;
-use SlopeIt\BreadcrumbBundle\Service\BreadcrumbBuilder;
 use Doctrine\Common\Annotations\Reader;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use SlopeIt\BreadcrumbBundle\EventListener\BreadcrumbListener;
+use SlopeIt\BreadcrumbBundle\Service\BreadcrumbBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;

@@ -1,0 +1,11 @@
+framework:
+    secret: 'NOT-SO-SECRET'
+    test: true
+    router:
+        resource: "%kernel.project_dir%/tests/Fixtures/config/routing.yml"
+    translator:
+        logging: true
+    cache: true
+    annotations:
+        enabled: true
+        cache: file

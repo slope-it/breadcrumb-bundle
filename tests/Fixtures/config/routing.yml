@@ -1,0 +1,5 @@
+parent_route:
+    path: /parent-path/{component1}/{component2}
+
+child_route:
+    path: /parent-path/{component1}/child-path/{component3}
