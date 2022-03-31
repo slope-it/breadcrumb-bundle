@@ -31,3 +31,7 @@ services:
             - '%slope_it_breadcrumb.template%'
         tags:
             - { name: twig.extension }
+
+    # Alias services tipically used in user code, so that they can be injected without specifying their alias.
+    SlopeIt\BreadcrumbBundle\Service\BreadcrumbBuilder:
+        alias: slope_it.breadcrumb.builder
