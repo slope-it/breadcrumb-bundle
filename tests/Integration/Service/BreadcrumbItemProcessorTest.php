@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class BreadcrumbItemProcessorTest extends KernelTestCase
 {
-    protected static function getKernelClass()
+    protected static function getKernelClass(): string
     {
         return TestKernel::class;
     }
