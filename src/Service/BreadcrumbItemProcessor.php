@@ -15,25 +15,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class BreadcrumbItemProcessor
 {
-    /**
-     * @var PropertyAccessorInterface
-     */
-    private $propertyAccessor;
+    private PropertyAccessorInterface $propertyAccessor;
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private RequestStack $requestStack;
 
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
     public function __construct(
         PropertyAccessorInterface $propertyAccessor,
@@ -118,10 +106,8 @@ class BreadcrumbItemProcessor
 
     /**
      * Returns the value contained in the variable name (with optional property path) of the given expression.
-     *
-     * @return mixed
      */
-    private function parseValue(string $expression, array $variables)
+    private function parseValue(string $expression, array $variables): mixed
     {
         $components = explode('.', $expression, 2);
         $variableName = substr($components[0], 1); // Remove the $ prefix;

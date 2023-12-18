@@ -6,6 +6,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use SlopeIt\BreadcrumbBundle\Model\BreadcrumbItem;
 use SlopeIt\BreadcrumbBundle\Service\BreadcrumbItemProcessor;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -58,7 +59,7 @@ class BreadcrumbItemProcessorTest extends TestCase
         $this->requestStack = \Mockery::mock(RequestStack::class);
 
         $currentRequest = \Mockery::mock(Request::class);
-        $currentRequest->attributes = [];
+        $currentRequest->attributes = new ParameterBag();
         $this->requestStack->allows('getCurrentRequest')->andReturn($currentRequest);
 
         $this->SUT = new BreadcrumbItemProcessor(
