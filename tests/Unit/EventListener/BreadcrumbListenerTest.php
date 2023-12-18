@@ -2,7 +2,6 @@
 
 namespace SlopeIt\Tests\BreadcrumbBundle\Unit\EventListener;
 
-use Doctrine\Common\Annotations\Reader;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use SlopeIt\BreadcrumbBundle\EventListener\BreadcrumbListener;
@@ -21,22 +20,19 @@ class BreadcrumbListenerTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_try_to_parse_annotations_when_controller_is_not_an_array()
+    public function it_does_not_try_to_parse_attributes_when_controller_is_not_an_array()
     {
         $breadcrumbBuilder = \Mockery::mock(BreadcrumbBuilder::class);
-        $annotationReader = \Mockery::mock(Reader::class);
 
-        $SUT = new BreadcrumbListener($breadcrumbBuilder, $annotationReader);
+        $SUT = new BreadcrumbListener($breadcrumbBuilder);
 
         $event = new ControllerEvent(
             \Mockery::spy(HttpKernelInterface::class),
-            function () {},
+            function () {}, // Controller is a callable
             \Mockery::mock(Request::class),
             HttpKernelInterface::MASTER_REQUEST
         );
 
-        $annotationReader->shouldReceive('getClassAnnotation')->never();
-        $annotationReader->shouldReceive('getMethodAnnotation')->never();
         $breadcrumbBuilder->shouldReceive('addItem')->never();
 
         $SUT->onKernelController($event);

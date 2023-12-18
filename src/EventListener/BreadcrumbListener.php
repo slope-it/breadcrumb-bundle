@@ -2,27 +2,17 @@
 
 namespace SlopeIt\BreadcrumbBundle\EventListener;
 
-use SlopeIt\BreadcrumbBundle\Annotation\Breadcrumb;
+use SlopeIt\BreadcrumbBundle\Attribute\Breadcrumb;
 use SlopeIt\BreadcrumbBundle\Service\BreadcrumbBuilder;
-use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class BreadcrumbListener
 {
-    /**
-     * @var Reader
-     */
-    private $annotationReader;
+    private BreadcrumbBuilder $breadcrumbBuilder;
 
-    /**
-     * @var BreadcrumbBuilder
-     */
-    private $breadcrumbBuilder;
-
-    public function __construct(BreadcrumbBuilder $breadcrumbBuilder, Reader $annotationReader)
+    public function __construct(BreadcrumbBuilder $breadcrumbBuilder)
     {
         $this->breadcrumbBuilder = $breadcrumbBuilder;
-        $this->annotationReader = $annotationReader;
     }
 
     public function onKernelController(ControllerEvent $event): void
@@ -38,16 +28,10 @@ class BreadcrumbListener
         $method = new \ReflectionMethod($controller, $action);
 
         $breadcrumbs = [];
-        if (($classAnnotation = $this->annotationReader->getClassAnnotation($class, Breadcrumb::class))) {
-            $breadcrumbs[] = $classAnnotation;
-        }
-        if (\PHP_VERSION_ID >= 80000 && ($classAttribute = $class->getAttributes(Breadcrumb::class)[0] ?? null)) {
+        if (($classAttribute = $class->getAttributes(Breadcrumb::class)[0] ?? null)) {
             $breadcrumbs[] = $classAttribute->newInstance();
         }
-        if (($methodAnnotation = $this->annotationReader->getMethodAnnotation($method, Breadcrumb::class))) {
-            $breadcrumbs[] = $methodAnnotation;
-        }
-        if (\PHP_VERSION_ID >= 80000 && ($methodAttribute = $method->getAttributes(Breadcrumb::class)[0] ?? null)) {
+        if (($methodAttribute = $method->getAttributes(Breadcrumb::class)[0] ?? null)) {
             $breadcrumbs[] = $methodAttribute->newInstance();
         }
 

@@ -10,20 +10,11 @@ use Twig\TwigFunction;
 
 class BreadcrumbExtension extends AbstractExtension
 {
-    /**
-     * @var BreadcrumbBuilder
-     */
-    private $builder;
+    private BreadcrumbBuilder $builder;
 
-    /**
-     * @var BreadcrumbItemProcessor
-     */
-    private $itemProcessor;
+    private BreadcrumbItemProcessor $itemProcessor;
 
-    /**
-     * @var string
-     */
-    private $template;
+    private string $template;
 
     public function __construct(BreadcrumbBuilder $builder, BreadcrumbItemProcessor $itemProcessor, string $template)
     {
@@ -33,7 +24,6 @@ class BreadcrumbExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritDoc}
      * @return TwigFunction[]
      */
     public function getFunctions(): array

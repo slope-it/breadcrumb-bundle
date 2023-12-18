@@ -48,7 +48,7 @@ class AppKernel extends Kernel
 
 ### 2. Define breadcrumbs
 
-There are three ways to create a breadcrumb: via code (1), via attributes (2) (PHP 8.0+) or via annotations (3).
+There are three ways to create a breadcrumb: via code (1) or via attributes (2).
 
 *Via code*: you can inject the breadcrumb builder in your controller and add breadcrumb items:
 
@@ -77,7 +77,7 @@ class CoolController extends Controller
 ```php
 <?php
 
-use SlopeIt\BreadcrumbBundle\Annotation\Breadcrumb;
+use SlopeIt\BreadcrumbBundle\Attribute\Breadcrumb;
 
 #[Breadcrumb([
   'label' => 'home',
@@ -96,32 +96,6 @@ class CoolController extends Controller
         // ...
     }
 }
-```
-
-*Via annotations*: just use the `@Breadcrumb` annotation at the class and/or method level. They will be merged (class comes first).
-
-*NOTE:* The annotation can take either a single item (in the example it's done at the class level) or multiple items (in the example, at the method level).
-
-```php
-<?php
-
-use SlopeIt\BreadcrumbBundle\Annotation\Breadcrumb;
-
-/**
- * @Breadcrumb({"label" = "home", "route" = "home_route", "params" = {"p" = "val"}, "translationDomain" = "domain" })
- */
-class CoolController extends Controller
-{
-    /**
-     * @Breadcrumb({
-     *   { "label" = "$entity.property", "route" = "entity_route" },
-     *   { "label" = "cool_stuff" }
-     * })
-     */
-    public function coolStuffAction()
-    {
-        // ...
-    }
 ```
 
 ### 3. Render breadcrumb
@@ -173,15 +147,17 @@ child_edit    | { parent_id: 12345, child_id: 67890 } | /parents/12345/children/
 If you are in the action for route `children_edit` and you want to generate a breadcrumb including all the above steps, you will be able to use the following annotation:
 
 ```php
-/**
- * @Breadcrumb({
- *   { "label" = "parents", "route" = "parent_list" },
- *   { "label" = "$parent.name", "route" = "parent_view" },
- *   { "label" = "children", "route" = "children_list" },
- *   { "label" = "$child.name", "route" = "child_view" },
- *   { "label" = "edit" }
- * })
- */
+<?php
+
+use SlopeIt\BreadcrumbBundle\Attribute\Breadcrumb;
+
+#[Breadcrumb([
+    ['label' => 'parents', 'route' => 'parent_list'],
+    ['label' => '$parent.name', 'route' => 'parent_view'],
+    ['label' => 'children', 'route' => 'children_list'],
+    ['label' => '$child.name', 'route' => 'child_view'],
+    ['label' => 'edit'],
+])]
 public function childrenEditAction($parentID, $childrenID)
 {
     // ...
