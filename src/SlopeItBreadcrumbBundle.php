@@ -8,9 +8,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SlopeItBreadcrumbBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getContainerExtension(): ?ExtensionInterface
     {
         return new SlopeItBreadcrumbExtension();

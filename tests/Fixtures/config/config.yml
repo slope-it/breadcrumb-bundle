@@ -6,6 +6,3 @@ framework:
     translator:
         logging: true
     cache: true
-    annotations:
-        enabled: true
-        cache: file

@@ -8,25 +8,14 @@ namespace SlopeIt\BreadcrumbBundle\Model;
  */
 class BreadcrumbItem
 {
-    /**
-     * @var string|null
-     */
-    private $label;
+    private ?string $label;
 
-    /**
-     * @var string|null
-     */
-    private $route;
+    private ?string $route;
 
-    /**
-     * @var array|null
-     */
-    private $routeParams;
+    private ?array $routeParams;
 
-    /**
-     * @var string|null|false - Null uses the default transation domain, passing "false" avoids translation altogether.
-     */
-    private $translationDomain;
+    /** Null uses the default transation domain, passing "false" avoids translation altogether. */
+    private string|null|false $translationDomain;
 
     public function __construct(
         ?string $label = null,
@@ -55,10 +44,7 @@ class BreadcrumbItem
         return $this->routeParams;
     }
 
-    /**
-     * @return false|string|null
-     */
-    public function getTranslationDomain()
+    public function getTranslationDomain(): string|null|false
     {
         return $this->translationDomain;
     }
