@@ -3,6 +3,7 @@
 namespace SlopeIt\Tests\BreadcrumbBundle\Unit\Service;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use SlopeIt\BreadcrumbBundle\Model\BreadcrumbItem;
 use SlopeIt\BreadcrumbBundle\Service\BreadcrumbBuilder;
@@ -15,15 +16,9 @@ class BreadcrumbBuilderTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /**
-     * @var BreadcrumbBuilder
-     */
-    private $builder;
+    private BreadcrumbBuilder $builder;
 
-    /**
-     * @var BreadcrumbItemFactory|\Mockery\MockInterface
-     */
-    private $itemFactory;
+    private BreadcrumbItemFactory|MockInterface $itemFactory;
 
     protected function setUp(): void
     {
@@ -48,9 +43,9 @@ class BreadcrumbBuilderTest extends TestCase
     public function test_getItems_nonEmptyBreadcrumb()
     {
         $item1 = \Mockery::mock(BreadcrumbItem::class);
-        $this->itemFactory->shouldReceive('create')->with('aLabel', 'aRoute', null, null)->andReturn($item1);
+        $this->itemFactory->expects('create')->with('aLabel', 'aRoute', null, null)->andReturn($item1);
         $item2 = \Mockery::mock(BreadcrumbItem::class);
-        $this->itemFactory->shouldReceive('create')->with('anotherLabel', 'anotherRoute', [ 'a' => 'b' ], null)
+        $this->itemFactory->expects('create')->with('anotherLabel', 'anotherRoute', [ 'a' => 'b' ], null)
             ->andReturn($item2);
 
         $this->builder->addItem('aLabel', 'aRoute');
