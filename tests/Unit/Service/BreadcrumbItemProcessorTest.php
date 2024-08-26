@@ -3,6 +3,8 @@
 namespace SlopeIt\Tests\BreadcrumbBundle\Unit\Service;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SlopeIt\BreadcrumbBundle\Model\BreadcrumbItem;
 use SlopeIt\BreadcrumbBundle\Service\BreadcrumbItemProcessor;
@@ -14,37 +16,20 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @coversDefaultClass \SlopeIt\BreadcrumbBundle\Service\BreadcrumbItemProcessor
- */
+#[CoversClass(BreadcrumbItemProcessor::class)]
 class BreadcrumbItemProcessorTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /**
-     * @var BreadcrumbItemProcessor
-     */
-    private $SUT;
+    private BreadcrumbItemProcessor $SUT;
 
-    /**
-     * @var PropertyAccessorInterface|\Mockery\MockInterface
-     */
-    private $propertyAccessor;
+    private PropertyAccessorInterface|MockInterface $propertyAccessor;
 
-    /**
-     * @var RequestStack|\Mockery\MockInterface
-     */
-    private $requestStack;
+    private RequestStack|MockInterface $requestStack;
 
-    /**
-     * @var UrlGeneratorInterface|\Mockery\MockInterface
-     */
-    private $urlGenerator;
+    private UrlGeneratorInterface|MockInterface $urlGenerator;
 
-    /**
-     * @var TranslatorInterface|\Mockery\MockInterface
-     */
-    private $translator;
+    private TranslatorInterface|MockInterface $translator;
 
     protected function setUp(): void
     {
@@ -70,9 +55,6 @@ class BreadcrumbItemProcessorTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::process
-     */
     public function test_process_item_with_label_as_simple_variable()
     {
         $item = new BreadcrumbItem('$variableName');
@@ -82,9 +64,6 @@ class BreadcrumbItemProcessorTest extends TestCase
         $this->assertSame('variableValue', $processedItems[0]->getTranslatedLabel());
     }
 
-    /**
-     * @covers ::process
-     */
     public function test_process_item_with_label_as_variable_with_property_path()
     {
         $item = new BreadcrumbItem('$variableName.property.nestedProperty');
@@ -99,9 +78,6 @@ class BreadcrumbItemProcessorTest extends TestCase
         $this->assertSame('propertyValue', $processedItems[0]->getTranslatedLabel());
     }
 
-    /**
-     * @covers ::process
-     */
     public function test_process_item_with_label_not_to_be_translated()
     {
         $item = new BreadcrumbItem('Already translated label', null, null, false);
@@ -111,9 +87,6 @@ class BreadcrumbItemProcessorTest extends TestCase
         $this->assertSame('Already translated label', $processedItems[0]->getTranslatedLabel());
     }
 
-    /**
-     * @covers ::process
-     */
     public function test_process_item_with_label_to_be_translated_with_default_translation_domain()
     {
         $item = new BreadcrumbItem('translatable_key');
@@ -126,9 +99,6 @@ class BreadcrumbItemProcessorTest extends TestCase
         $this->assertSame('Translated label', $processedItems[0]->getTranslatedLabel());
     }
 
-    /**
-     * @covers ::process
-     */
     public function test_process_item_with_label_to_be_translated_with_specific_translation_domain()
     {
         $item = new BreadcrumbItem('translatable_key', null, null, 'custom_domain');
@@ -141,9 +111,6 @@ class BreadcrumbItemProcessorTest extends TestCase
         $this->assertSame('Translated label', $processedItems[0]->getTranslatedLabel());
     }
 
-    /**
-     * @covers ::process
-     */
     public function test_process_item_with_null_label()
     {
         $item = new BreadcrumbItem();
