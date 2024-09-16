@@ -3,22 +3,18 @@
 namespace SlopeIt\Tests\BreadcrumbBundle\Unit\Attribute;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use SlopeIt\BreadcrumbBundle\Attribute\Breadcrumb;
 
-/**
- * @coversDefaultClass \SlopeIt\BreadcrumbBundle\Attribute\Breadcrumb
- */
+#[CoversClass(Breadcrumb::class)]
 class BreadcrumbTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /**
-     * The constructor can also receive an array of breadcrumb items.
-     *
-     * @covers ::__construct
-     */
-    public function test_constructor_withMultipleItems()
+    #[Test]
+    public function it_can_be_constructed_with_an_array_of_items()
     {
         $attribute = new Breadcrumb([
             ['label' => 'aLabel', 'route' => 'aRoute', 'params' => ['param' => 'value']],
@@ -33,12 +29,8 @@ class BreadcrumbTest extends TestCase
         $this->assertArrayNotHasKey('params', $attribute->items[1]);
     }
 
-    /**
-     * The constructor can receive a single breadcrumb item.
-     *
-     * @covers ::__construct
-     */
-    public function test_constructor_withSingleItem()
+    #[Test]
+    public function it_can_be_constructed_with_a_single_item()
     {
         $attribute = new Breadcrumb([
             'label' => 'aLabel',

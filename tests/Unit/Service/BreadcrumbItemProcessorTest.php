@@ -61,7 +61,7 @@ class BreadcrumbItemProcessorTest extends TestCase
 
         $processedItems = $this->SUT->process([$item], ['variableName' => 'variableValue']);
 
-        $this->assertSame('variableValue', $processedItems[0]->getTranslatedLabel());
+        $this->assertSame('variableValue', $processedItems[0]->translatedLabel);
     }
 
     public function test_process_item_with_label_as_variable_with_property_path()
@@ -75,7 +75,7 @@ class BreadcrumbItemProcessorTest extends TestCase
 
         $processedItems = $this->SUT->process([$item], ['variableName' => $object]);
 
-        $this->assertSame('propertyValue', $processedItems[0]->getTranslatedLabel());
+        $this->assertSame('propertyValue', $processedItems[0]->translatedLabel);
     }
 
     public function test_process_item_with_label_not_to_be_translated()
@@ -84,7 +84,7 @@ class BreadcrumbItemProcessorTest extends TestCase
 
         $processedItems = $this->SUT->process([$item], []);
 
-        $this->assertSame('Already translated label', $processedItems[0]->getTranslatedLabel());
+        $this->assertSame('Already translated label', $processedItems[0]->translatedLabel);
     }
 
     public function test_process_item_with_label_to_be_translated_with_default_translation_domain()
@@ -96,7 +96,7 @@ class BreadcrumbItemProcessorTest extends TestCase
 
         $processedItems = $this->SUT->process([$item], []);
 
-        $this->assertSame('Translated label', $processedItems[0]->getTranslatedLabel());
+        $this->assertSame('Translated label', $processedItems[0]->translatedLabel);
     }
 
     public function test_process_item_with_label_to_be_translated_with_specific_translation_domain()
@@ -108,7 +108,7 @@ class BreadcrumbItemProcessorTest extends TestCase
 
         $processedItems = $this->SUT->process([$item], []);
 
-        $this->assertSame('Translated label', $processedItems[0]->getTranslatedLabel());
+        $this->assertSame('Translated label', $processedItems[0]->translatedLabel);
     }
 
     public function test_process_item_with_null_label()
@@ -117,6 +117,6 @@ class BreadcrumbItemProcessorTest extends TestCase
 
         $processedItems = $this->SUT->process([$item], []);
 
-        $this->assertNull($processedItems[0]->getTranslatedLabel());
+        $this->assertNull($processedItems[0]->translatedLabel);
     }
 }

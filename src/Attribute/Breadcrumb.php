@@ -17,6 +17,9 @@ class Breadcrumb
      * - params: optional, if provided must be an array of key-value parameters needed to generate the route. Parameter
      *     values can be provided either statically or using the same $variable.property.path syntax used by "label".
      *     See note above regarding the "route" key to know when you need to provide route params explicitly.
+     * - translationDomain: optional, if provided must be a valid translation domain. `false` disables translation.
+     *
+     * @var array{label: string, route?: string, params?: array, translationDomain?: string|null|false}[]
      */
     public array $items;
 

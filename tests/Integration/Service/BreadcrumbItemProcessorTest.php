@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace SlopeIt\Tests\BreadcrumbBundle\Integration\Service;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use SlopeIt\BreadcrumbBundle\Model\BreadcrumbItem;
 use SlopeIt\BreadcrumbBundle\Service\BreadcrumbItemProcessor;
 use SlopeIt\Tests\BreadcrumbBundle\Fixtures\TestKernel;
@@ -12,6 +14,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
+#[CoversClass(BreadcrumbItemProcessor::class)]
 class BreadcrumbItemProcessorTest extends KernelTestCase
 {
     protected static function getKernelClass(): string
@@ -19,7 +22,8 @@ class BreadcrumbItemProcessorTest extends KernelTestCase
         return TestKernel::class;
     }
 
-    public function test_process_item_with_reused_path_parameters()
+    #[Test]
+    public function it_processes_items_and_reuses_path_parameters_when_generating_urls()
     {
         // Preconditions
         // NOTE: see `tests/Fixtures/config/routing.yml`
@@ -35,7 +39,7 @@ class BreadcrumbItemProcessorTest extends KernelTestCase
 
         // Action
         /** @var BreadcrumbItemProcessor $SUT */
-        $SUT = self::getContainer()->get('slope_it.breadcrumb.item_processor');
+        $SUT = self::getContainer()->get(BreadcrumbItemProcessor::class);
         $processedBreadcrumbItems = $SUT->process(
             [
                 new BreadcrumbItem('Parent page', 'parent_route'),
@@ -46,11 +50,11 @@ class BreadcrumbItemProcessorTest extends KernelTestCase
 
         // Verification: url of parent route was reconstructed as is, without needing to specify "component1" and
         // "component2" because already present.
-        $this->assertSame('/parent-path/foo/bar', $processedBreadcrumbItems[0]->getUrl());
+        $this->assertSame('/parent-path/foo/bar', $processedBreadcrumbItems[0]->url);
 
         // Verification: url of child route was constructed by implicitly reusing "component1" from current, parent path
         // "component3" was explicitly provided in the breadcrum item.
         // "component2" was ignored as not present in child path.
-        $this->assertSame('/parent-path/foo/child-path/baz', $processedBreadcrumbItems[1]->getUrl());
+        $this->assertSame('/parent-path/foo/child-path/baz', $processedBreadcrumbItems[1]->url);
     }
 }
