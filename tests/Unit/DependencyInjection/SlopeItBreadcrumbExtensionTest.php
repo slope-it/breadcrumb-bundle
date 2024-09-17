@@ -3,15 +3,16 @@ declare(strict_types=1);
 
 namespace SlopeIt\Tests\BreadcrumbBundle\Unit\DependencyInjection;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use SlopeIt\BreadcrumbBundle\DependencyInjection\SlopeItBreadcrumbExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+#[CoversClass(SlopeItBreadcrumbExtension::class)]
 class SlopeItBreadcrumbExtensionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function its_template_can_be_overridden_via_configuration()
     {
         $container = new ContainerBuilder();

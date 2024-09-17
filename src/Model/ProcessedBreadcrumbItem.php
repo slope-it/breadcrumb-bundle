@@ -7,23 +7,13 @@ namespace SlopeIt\BreadcrumbBundle\Model;
  */
 class ProcessedBreadcrumbItem
 {
-    private ?string $translatedLabel;
+    public readonly ?string $translatedLabel;
 
-    private ?string $url;
+    public readonly ?string $url;
 
     public function __construct(?string $translatedLabel = null, ?string $url = null)
     {
         $this->translatedLabel = $translatedLabel;
         $this->url = $url;
-    }
-
-    public function getTranslatedLabel(): ?string
-    {
-        return $this->translatedLabel;
-    }
-
-    public function getUrl(): ?string
-    {
-        return $this->url;
     }
 }

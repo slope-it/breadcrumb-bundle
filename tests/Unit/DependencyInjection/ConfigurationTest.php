@@ -3,23 +3,19 @@
 namespace SlopeIt\Tests\BreadcrumbBundle\Unit\DependencyInjection;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use SlopeIt\BreadcrumbBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Processor;
 
-/**
- * @coversDefaultClass \SlopeIt\BreadcrumbBundle\DependencyInjection\Configuration
- */
+#[CoversClass(Configuration::class)]
 class ConfigurationTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /**
-     * Tests the configuration when overriding the template.
-     *
-     * @covers ::getConfigTreeBuilder
-     */
-    public function test_load_overrideTemplate()
+    #[Test]
+    public function it_allows_to_override_the_default_template()
     {
         $config = [
             'slope_it_breadcrumb' => [

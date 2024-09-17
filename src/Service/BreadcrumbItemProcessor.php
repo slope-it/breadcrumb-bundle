@@ -77,26 +77,26 @@ class BreadcrumbItemProcessor
     private function processItem(BreadcrumbItem $item, array $variables): ProcessedBreadcrumbItem
     {
         // Process the label
-        if ($item->getLabel() && $item->getLabel()[0] === '$') {
-            $processedLabel = $this->parseValue($item->getLabel(), $variables);
-        } elseif (!$item->getLabel() || $item->getTranslationDomain() === false) {
-            $processedLabel = $item->getLabel();
+        if ($item->label && \str_starts_with($item->label, '$')) {
+            $processedLabel = $this->parseValue($item->label, $variables);
+        } elseif (!$item->label || $item->translationDomain === false) {
+            $processedLabel = $item->label;
         } else {
-            $processedLabel = $this->translator->trans($item->getLabel(), [], $item->getTranslationDomain());
+            $processedLabel = $this->translator->trans($item->label, [], $item->translationDomain);
         }
 
         // Process the route
-        if ($item->getRoute() !== null) {
+        if ($item->route !== null) {
             $params = [];
-            foreach ($item->getRouteParams() ?: [] as $key => $value) {
-                if (is_string($value) && $value[0] === '$') {
+            foreach ($item->routeParams ?? [] as $key => $value) {
+                if (is_string($value) && \str_starts_with($value, '$')) {
                     $params[$key] = $this->parseValue($value, $variables);
                 } else {
                     $params[$key] = $value;
                 }
             }
 
-            $processedUrl = $this->urlGenerator->generate($item->getRoute(), $params);
+            $processedUrl = $this->urlGenerator->generate($item->route, $params);
         } else {
             $processedUrl = null;
         }

@@ -8,44 +8,24 @@ namespace SlopeIt\BreadcrumbBundle\Model;
  */
 class BreadcrumbItem
 {
-    private ?string $label;
+    public readonly ?string $label;
 
-    private ?string $route;
+    public readonly ?string $route;
 
-    private ?array $routeParams;
+    public readonly ?array $routeParams;
 
     /** Null uses the default transation domain, passing "false" avoids translation altogether. */
-    private string|null|false $translationDomain;
+    public readonly string|null|false $translationDomain;
 
     public function __construct(
         ?string $label = null,
         ?string $route = null,
         ?array $routeParams = null,
-        $translationDomain = null
+        string|null|false $translationDomain = null
     ) {
         $this->label = $label;
         $this->route = $route;
         $this->routeParams = $routeParams;
         $this->translationDomain = $translationDomain;
-    }
-
-    public function getLabel(): ?string
-    {
-        return $this->label;
-    }
-
-    public function getRoute(): ?string
-    {
-        return $this->route;
-    }
-
-    public function getRouteParams(): ?array
-    {
-        return $this->routeParams;
-    }
-
-    public function getTranslationDomain(): string|null|false
-    {
-        return $this->translationDomain;
     }
 }

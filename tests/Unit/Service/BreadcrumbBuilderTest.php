@@ -3,54 +3,33 @@
 namespace SlopeIt\Tests\BreadcrumbBundle\Unit\Service;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use SlopeIt\BreadcrumbBundle\Model\BreadcrumbItem;
 use SlopeIt\BreadcrumbBundle\Service\BreadcrumbBuilder;
-use SlopeIt\BreadcrumbBundle\Service\BreadcrumbItemFactory;
 
-/**
- * @coversDefaultClass \SlopeIt\BreadcrumbBundle\Service\BreadcrumbBuilder
- */
+#[CoversClass(BreadcrumbBuilder::class)]
 class BreadcrumbBuilderTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private BreadcrumbBuilder $builder;
-
-    private BreadcrumbItemFactory|MockInterface $itemFactory;
+    private BreadcrumbBuilder $SUT;
 
     protected function setUp(): void
     {
-        $this->itemFactory = \Mockery::mock(BreadcrumbItemFactory::class);
-        $this->builder = new BreadcrumbBuilder($this->itemFactory);
+        $this->SUT = new BreadcrumbBuilder();
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::getItems
-     */
-    public function test_getItems_emptyBreadcrumb()
+    #[Test]
+    public function it_allows_to_add_items()
     {
-        $this->assertEmpty($this->builder->getItems());
-    }
+        $this->SUT->addItem('aLabel', 'aRoute');
+        $this->SUT->addItem('anotherLabel', 'anotherRoute', ['a' => 'b']);
 
-    /**
-     * @covers ::__construct
-     * @covers ::addItem
-     * @covers ::getItems
-     */
-    public function test_getItems_nonEmptyBreadcrumb()
-    {
-        $item1 = \Mockery::mock(BreadcrumbItem::class);
-        $this->itemFactory->expects('create')->with('aLabel', 'aRoute', null, null)->andReturn($item1);
-        $item2 = \Mockery::mock(BreadcrumbItem::class);
-        $this->itemFactory->expects('create')->with('anotherLabel', 'anotherRoute', [ 'a' => 'b' ], null)
-            ->andReturn($item2);
-
-        $this->builder->addItem('aLabel', 'aRoute');
-        $this->builder->addItem('anotherLabel', 'anotherRoute', [ 'a' => 'b' ]);
-
-        $this->assertEquals([ $item1, $item2 ], $this->builder->getItems());
+        $this->assertEquals(
+            [new BreadcrumbItem('aLabel', 'aRoute'), new BreadcrumbItem('anotherLabel', 'anotherRoute', ['a' => 'b'])],
+            $this->SUT->getItems()
+        );
     }
 }

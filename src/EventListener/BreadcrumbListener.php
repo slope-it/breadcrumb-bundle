@@ -4,8 +4,11 @@ namespace SlopeIt\BreadcrumbBundle\EventListener;
 
 use SlopeIt\BreadcrumbBundle\Attribute\Breadcrumb;
 use SlopeIt\BreadcrumbBundle\Service\BreadcrumbBuilder;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
+#[AsEventListener(KernelEvents::CONTROLLER, method: 'onKernelController')]
 class BreadcrumbListener
 {
     private BreadcrumbBuilder $breadcrumbBuilder;
