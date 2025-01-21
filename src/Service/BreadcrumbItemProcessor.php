@@ -7,6 +7,7 @@ use SlopeIt\BreadcrumbBundle\Model\ProcessedBreadcrumbItem;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -78,7 +79,12 @@ class BreadcrumbItemProcessor
     {
         // Process the label
         if ($item->label && \str_starts_with($item->label, '$')) {
-            $processedLabel = $this->parseValue($item->label, $variables);
+            $labelValue = $this->parseValue($item->label, $variables);
+            if ($labelValue instanceof TranslatableMessage) {
+                $processedLabel = $labelValue->trans($this->translator, $item->translationDomain ?: null);
+            } else {
+                $processedLabel = $labelValue;
+            }
         } elseif (!$item->label || $item->translationDomain === false) {
             $processedLabel = $item->label;
         } else {
