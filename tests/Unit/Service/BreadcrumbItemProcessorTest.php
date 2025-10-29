@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[CoversClass(BreadcrumbItemProcessor::class)]
@@ -107,6 +108,40 @@ class BreadcrumbItemProcessorTest extends TestCase
             ->andReturn('Translated label');
 
         $processedItems = $this->SUT->process([$item], []);
+
+        $this->assertSame('Translated label', $processedItems[0]->translatedLabel);
+    }
+
+    public function test_process_item_with_label_as_translatable_message_with_default_transition_domain()
+    {
+        $item = new BreadcrumbItem('$variableName.property');
+
+        $translatable = new TranslatableMessage('translatable_key');
+        $object = (object) ['getProperty' => fn () => $translatable];
+
+        $this->propertyAccessor->expects('getValue')->with($object, 'property')
+            ->andReturn($translatable);
+        $this->translator->expects('trans')->with('translatable_key', [], null, null)
+            ->andReturn('Translated label');
+
+        $processedItems = $this->SUT->process([$item], ['variableName' => $object]);
+
+        $this->assertSame('Translated label', $processedItems[0]->translatedLabel);
+    }
+
+    public function test_process_item_with_label_as_translatable_message_with_custom_transition_domain()
+    {
+        $item = new BreadcrumbItem('$variableName.property', translationDomain: 'custom_domain');
+
+        $translatable = new TranslatableMessage('translatable_key', domain: 'custom_domain');
+        $object = (object) ['getProperty' => fn () => $translatable];
+
+        $this->propertyAccessor->expects('getValue')->with($object, 'property')
+            ->andReturn($translatable);
+        $this->translator->expects('trans')->with('translatable_key', [], 'custom_domain', null)
+            ->andReturn('Translated label');
+
+        $processedItems = $this->SUT->process([$item], ['variableName' => $object]);
 
         $this->assertSame('Translated label', $processedItems[0]->translatedLabel);
     }
