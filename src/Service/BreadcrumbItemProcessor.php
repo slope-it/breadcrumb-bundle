@@ -77,9 +77,7 @@ class BreadcrumbItemProcessor
     private function processItem(BreadcrumbItem $item, array $variables): ProcessedBreadcrumbItem
     {
         // Process the label
-        if ($item->label && \str_starts_with($item->label, '$')) {
-            $processedLabel = $this->parseValue($item->label, $variables);
-        } elseif (!$item->label || $item->translationDomain === false) {
+        if (!$item->label || $item->translationDomain === false) {
             $processedLabel = $item->label;
         } else {
             $processedLabel = $this->translator->trans($item->label, [], $item->translationDomain);
