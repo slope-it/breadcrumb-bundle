@@ -61,8 +61,10 @@ class CoolController extends Controller
 {
     public function coolStuffAction(BreadcrumbBuilder $builder)
     {
+        $label = 'This is a fixed label'
+        
         $builder->addItem('home', 'home_route');
-        $builder->addItem('$entity.property', 'entity_route');
+        $builder->addItem($label, 'entity_route', translationDomain: false);
         $builder->addItem('cool_stuff');
     
         // ...
@@ -88,7 +90,6 @@ use SlopeIt\BreadcrumbBundle\Attribute\Breadcrumb;
 class CoolController extends Controller
 {
     #[Breadcrumb([
-        ['label' => '$entity.property', 'route' => 'entity_route'], 
         ['label' => 'cool_stuff'], 
     ])]
     public function coolStuffAction()
@@ -125,11 +126,10 @@ Furthermore, in case you need to know whether the breadcrumb has items or not, y
 Under the hood, this is the business logic involved, for each item, in the breadcrumb generation:
 * `label` will be the printed text. It can be either:
   * A "static" string (the translator will attempt to translate it by using it as a translation key)
-  * A special string, prepended with `$`. In this case, the breadcrumb label will be extracted from the variable passed to the template. Property paths can be used, e.g.: `$variable.property.path`
 * `route` will be used to generate the url for the item anchor (if provided). If not provided, the item will not be clickable.
 * `params` will be used to generate the url related to the provided route. It's an associative array where each value can be either:
   * A "static" string
-  * A "special" string using the format `$variable.property.path`. The treatment is exactly the same as in "label". This is useful to dynamically retrieve url params (e.g. entity ID) starting from view variables.
+  * A "special" string using the format `$variable.property.path`. The parameter value will be extracted from the variable passed to the template. This is useful to dynamically retrieve url params (e.g. entity ID) starting from view variables.
 * `translationDomain` will be used to translate the key provided in the `label` attribute. If `null`, the default translation domain will be used. Provide `false` if you put a non-translatable string in `label` and you don't want to use it as a translation key.
 
 *NOTE:* **you don't need to pass all the route parameters that are needed by route, as long as these route parameters are already present in the URL for the current request**. In other words, if your breadcrumb hierarchical structure somehow "matches" your URL structure.
@@ -144,27 +144,25 @@ child_view    | { parent_id: 12345, child_id: 67890 } | /parents/12345/children/
 child_edit    | { parent_id: 12345, child_id: 67890 } | /parents/12345/children/67890/edit
 ```
 
-If you are in the action for route `children_edit` and you want to generate a breadcrumb including all the above steps, you will be able to use the following annotation:
+If you are in the action for route `children_edit` and you want to generate a breadcrumb including all the above steps, you will be able to use the following items additions:
 
 ```php
 <?php
 
 use SlopeIt\BreadcrumbBundle\Attribute\Breadcrumb;
 
-#[Breadcrumb([
-    ['label' => 'parents', 'route' => 'parent_list'],
-    ['label' => '$parent.name', 'route' => 'parent_view'],
-    ['label' => 'children', 'route' => 'children_list'],
-    ['label' => '$child.name', 'route' => 'child_view'],
-    ['label' => 'edit'],
-])]
-public function childrenEditAction($parentID, $childrenID)
+public function childrenEditAction(BreadcrumbBuilder $builder, $parentID, $childrenID, object $parent, object $children)
 {
-    // ...
+    $builder->addItem('parents', 'parent_list');
+    $builder->addItem($parent->name, 'parent_view');
+    $builder->addItem('children', 'children_list');
+    $builder->addItem($child->name, 'child_view');
+    $builder->addItem('edit');
+
 }
 ```
 
-Note how you don't have to provide the route parameters (since the current request already has them all). It would work the same if you build it via code instead.
+Note how you don't have to provide the route parameters (since the current request already has them all).
 
 ## Override breadcrumb template
 

@@ -55,27 +55,13 @@ class BreadcrumbItemProcessorTest extends TestCase
         );
     }
 
-    public function test_process_item_with_label_as_simple_variable()
+    public function test_process_item_with_label_ignoring_expressions()
     {
-        $item = new BreadcrumbItem('$variableName');
+        $item = new BreadcrumbItem('$variableName', null, null, false);
 
         $processedItems = $this->SUT->process([$item], ['variableName' => 'variableValue']);
 
-        $this->assertSame('variableValue', $processedItems[0]->translatedLabel);
-    }
-
-    public function test_process_item_with_label_as_variable_with_property_path()
-    {
-        $item = new BreadcrumbItem('$variableName.property.nestedProperty');
-
-        $object = (object) ['property' => (object) ['nestedProperty' => 'propertyValue']];
-
-        $this->propertyAccessor->expects('getValue')->with($object, 'property.nestedProperty')
-            ->andReturn('propertyValue');
-
-        $processedItems = $this->SUT->process([$item], ['variableName' => $object]);
-
-        $this->assertSame('propertyValue', $processedItems[0]->translatedLabel);
+        $this->assertSame('$variableName', $processedItems[0]->translatedLabel);
     }
 
     public function test_process_item_with_label_not_to_be_translated()
